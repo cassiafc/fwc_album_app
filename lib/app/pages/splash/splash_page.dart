@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fwc_album_app/app/core/ui/helpers/loader.dart';
-import 'package:fwc_album_app/app/core/ui/helpers/messages.dart';
 import 'package:fwc_album_app/app/core/ui/styles/button_styles.dart';
 import 'package:fwc_album_app/app/core/ui/styles/colors_app.dart';
 import 'package:fwc_album_app/app/core/ui/styles/text_styles.dart';
@@ -9,7 +7,6 @@ import 'package:fwc_album_app/app/pages/splash/presenter/presenter/splash_presen
 import 'package:fwc_album_app/app/pages/splash/view/splash_view_impl.dart';
 
 class SplashPage extends StatefulWidget {
-
   final SplashPresenter presenter;
 
   const SplashPage({super.key, required this.presenter});
@@ -17,7 +14,8 @@ class SplashPage extends StatefulWidget {
   @override
   State<SplashPage> createState() => _SplashPageState();
 }
-class _SplashPageState extends SplashViewImpl{
+
+class _SplashPageState extends SplashViewImpl {
 
   @override
   Widget build(BuildContext context) {
@@ -48,26 +46,25 @@ class _SplashPageState extends SplashViewImpl{
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).size.height * .19),
-                  child: Button(
-                    width: MediaQuery.of(context).size.width * .9,
-                    onPressed: () {
-                      widget.presenter.checkLogin();
-                    },
-                    style: context.buttonStyles.yellowButton,
-                    labelStyle: context
-                        .textStyles.textsecondaryFontExtraBoldPrimaryColor,
-                    label: 'Acessar',
-                  ),
+                    bottom: MediaQuery.of(context).size.height * .19),
+                child: Button(
+                  width: MediaQuery.of(context).size.width * .9,
+                  onPressed: () {
+                    widget.presenter.checkLogin();
+                  },
+                  style: context.buttonStyles.yellowButton,
+                  labelStyle:
+                  context.textStyles.textsecondaryFontExtraBoldPrimaryColor,
+                  label: 'Acessar',
                 ),
               ),
+            ),
 
             //imagens bandeiras
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 20),
+                padding: const EdgeInsets.only(bottom: 20),
                 child: Image.asset('assets/images/bandeiras.png'),
               ),
             )

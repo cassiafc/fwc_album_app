@@ -8,16 +8,14 @@ import 'package:fwc_album_app/app/pages/home/view/home_view.dart';
 abstract class HomeViewImpl extends State<HomePage>
     with Loader<HomePage>, Messages<HomePage>
     implements HomeView {
-
   UserModel? user;
 
   @override
   void initState() {
-   widget.presenter.view = this;
-   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-     widget.presenter.getUserData();
-
-   });
+    widget.presenter.view = this;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget.presenter.getUserData();
+    });
     super.initState();
   }
 
@@ -25,13 +23,13 @@ abstract class HomeViewImpl extends State<HomePage>
   void erro(String message) {
     hideLoader();
     showError(message);
-
   }
 
   @override
   void logoutSuccess() {
-  hideLoader();
-  Navigator.of(context).pushNamedAndRemoveUntil('/auth/login', (route) => false);
+    hideLoader();
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/auth/login', (route) => false);
   }
 
   @override
@@ -40,7 +38,5 @@ abstract class HomeViewImpl extends State<HomePage>
     setState(() {
       this.user = user;
     });
-
   }
-
 }

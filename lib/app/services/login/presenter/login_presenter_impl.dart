@@ -1,5 +1,8 @@
 import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:fwc_album_app/app/core/exceptions/unauthorized_exception.dart';
+import 'package:fwc_album_app/app/core/ui/helpers/firebase_errors.dart';
 import 'package:fwc_album_app/app/services/login/login_service.dart';
 import 'package:fwc_album_app/app/services/login/presenter/login_presenter.dart';
 import '../../../pages/auth/login/login_view.dart';
@@ -16,7 +19,10 @@ class LoginPresenterImpl implements LoginPresenter {
   Future<void> login(String email, String password) async {
     try {
       await loginService.execute(email: email, password: password);
+
       _view.success();
+    } on FirebaseAuthException catch (e) {
+      _view.error(getErrorString(e.code));
     } on UnauthorizeException {
       _view.error('Usuário ou senha inválido');
     } catch (e, s) {
