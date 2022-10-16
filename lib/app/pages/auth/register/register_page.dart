@@ -76,6 +76,7 @@ class _RegisterPageState extends RegisterViewImpl {
                     ),
                     TextFormField(
                       controller: emailEC,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
                         label: Text(
                           'E-mail*',
@@ -111,7 +112,7 @@ class _RegisterPageState extends RegisterViewImpl {
                       obscureText: true,
                       decoration: const InputDecoration(
                         label: Text(
-                          'Confirmae senha*',
+                          'Confirmar senha*',
                         ),
                       ),
                       validator: Validatorless.multiple([
@@ -131,11 +132,12 @@ class _RegisterPageState extends RegisterViewImpl {
                             formKey.currentState?.validate() ?? false;
 
                         if (formValid) {
+                          showLoader();
                           widget.presenter.register(
-                            name: nameEC.text,
-                            email: emailEC.text,
-                            password: passwordEC.text,
-                            confirmPassword: confirmPasswordEC.text,
+                            name: nameEC.text.trim(),
+                            email: emailEC.text.trim(),
+                            password: passwordEC.text.trim(),
+                            confirmPassword: confirmPasswordEC.text.trim(),
                           );
                         }
                       },

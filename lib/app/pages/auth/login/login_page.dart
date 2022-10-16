@@ -60,6 +60,7 @@ class _LoginPageState extends LoginViewImpl {
                   ),
                   TextFormField(
                     controller: emailEC,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       label: Text('E-mail'),
