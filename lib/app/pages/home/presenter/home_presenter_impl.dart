@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fwc_album_app/app/pages/home/presenter/home_presenter.dart';
 import 'package:fwc_album_app/app/pages/home/view/home_view.dart';
 import 'package:fwc_album_app/app/repository/user/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePresenterImpl implements HomePresenter {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   final UserRepository userRepository;
   late HomeView _view;
 
@@ -25,8 +27,9 @@ class HomePresenterImpl implements HomePresenter {
   @override
   Future<void> logout() async {
     _view.showLoader();
-    final sp = await SharedPreferences.getInstance();
-    sp.clear();
+    auth.signOut();
+    // final sp = await SharedPreferences.getInstance();
+    // sp.clear();
     _view.logoutSuccess();
   }
 

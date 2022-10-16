@@ -48,8 +48,4 @@ import 'package:fwc_album_app/app/models/user_sticker_model.dart';
   String toJson() => json.encode(toMap());
     factory GroupsStickers.fromJson(String source) =>
         GroupsStickers.forMap(json.decode(source));
-
-
-
-
-}
+  }

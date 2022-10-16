@@ -65,7 +65,11 @@ class HomePage extends StatefulWidget {
                         height: 10,
                       ),
                       Text(
-                        '${user?.totalStickers ?? 0} figurinhas',
+                        'Olá, ${user?.name ?? ''}',
+                        style: context.textStyles.titleWhite,
+                      ),
+                      Text(
+                        'você tem ${user?.totalStickers ?? 0} figurinhas',
                         style: context.textStyles.titleWhite,
                       ),
                       const SizedBox(

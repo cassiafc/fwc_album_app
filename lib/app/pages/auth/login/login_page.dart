@@ -108,8 +108,8 @@ class _LoginPageState extends LoginViewImpl {
                       if(valid) {
                         showLoader();
                         widget.presenter.login(
-                            emailEC.text,
-                            passwordEC.text);
+                            emailEC.text.trim(),
+                            passwordEC.text.trim());
                       }
                     },
                     style: context.buttonStyles.yellowButton,
@@ -125,7 +125,7 @@ class _LoginPageState extends LoginViewImpl {
                   children: [
                     const Spacer(),
                     Text.rich(
-                      TextSpan(text: 'Nãp possui uma conta?', children: [
+                      TextSpan(text: 'Nãp possui uma conta? ', children: [
                         TextSpan(
                           text: 'Cadastre-se',
                           style: context.textStyles.textsecondaryFontMedium
