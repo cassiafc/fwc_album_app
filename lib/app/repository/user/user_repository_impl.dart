@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:fwc_album_app/app/core/exceptions/repository_exception.dart';
 import 'package:fwc_album_app/app/core/rest/custom_dio.dart';
 import 'package:fwc_album_app/app/models/user_model.dart';
@@ -37,9 +36,6 @@ class UserRepositoryImpl implements UserRepository {
         throw RepositoryException(
             message: 'Erro ao buscar dados do usuário logado');
       }
-
-      // final result = await dio.auth().get('/api/me');
-      // return UserModel.fromMap(result.data);
     } on DioError catch (e, s) {
       log('Erro ao buscar dados do usuário logado', error: e, stackTrace: s);
       throw RepositoryException(

@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fwc_album_app/app/core/exceptions/repository_exception.dart';
 import 'package:fwc_album_app/app/core/rest/custom_dio.dart';
 import 'package:fwc_album_app/app/models/groups_stickers.dart';
@@ -9,6 +11,8 @@ import 'package:fwc_album_app/app/models/sticker_model.dart';
 import 'package:fwc_album_app/app/repository/stickers/stickers_repository.dart';
 
 class StickersRepositoryImpl implements StickersRepository {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final CustomDio dio;
 
   StickersRepositoryImpl({
@@ -18,9 +22,13 @@ class StickersRepositoryImpl implements StickersRepository {
   @override
   Future<List<GroupsStickers>> getMyAlbum() async {
     try {
-      final result = await dio.auth().get('/api/countries');
-      return result.data
-          .map<GroupsStickers>((g) => GroupsStickers.forMap(g))
+      final countriesRef = firestore.collection("countries");
+
+      QuerySnapshot snapshots = await countriesRef.get();
+
+      return snapshots.docs
+          .map<GroupsStickers>(
+              (e) => GroupsStickers.forMap(e.data() as Map<String, dynamic>))
           .toList();
     } on DioError catch (e, s) {
       log('Erro ao buscar album do usuário', error: e, stackTrace: s);
