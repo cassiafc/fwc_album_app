@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_getit/flutter_getit.dart';
 import 'package:fwc_album_app/app/core/ui/styles/colors_app.dart';
 import 'package:fwc_album_app/app/core/ui/styles/text_styles.dart';
 import 'package:fwc_album_app/app/models/groups_stickers.dart';
+import 'package:fwc_album_app/app/pages/my_stickers/presenter/my_sticker_presenter.dart';
 
 import '../../../models/user_sticker_model.dart';
 
@@ -55,7 +57,6 @@ class StickerGroup extends StatelessWidget {
                   .where((sticker) => sticker.stickerNumber == stickerNumber);
 
               final sticker = stickerList.isNotEmpty ? stickerList.first : null;
-
               final stickerWidget = Sticker(
                 stickerNumber: stickerNumber,
                 sticker: sticker,
@@ -100,8 +101,15 @@ class Sticker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.of(context).pushNamed('/sticker-detail');
+      onTap: () async {
+        final presenter = context.get<MyStickerPresenter>();
+       await Navigator.of(context).pushNamed('/sticker-detail', arguments: {
+          'countryCode': countryCode,
+          'stickerNumber': stickerNumber,
+          'countryName': countryName,
+          'stickerUser': sticker,
+        });
+       presenter.refresh();
       },
       child: Container(
         color: sticker != null ? context.colors.primary : context.colors.grey,
@@ -115,20 +123,28 @@ class Sticker extends StatelessWidget {
               alignment: Alignment.topRight,
               padding: const EdgeInsets.all(2),
               child: Text(
-                sticker?.duplicate.toString() ?? '',
-                style: context.textStyles.textsecondaryFontMedium
-                    .copyWith(color: context.colors.yellow),
+                sticker?.duplicate.toString() ?? "",
+                style: context.textStyles.textsecondaryFontMedium.copyWith(
+                  color: context.colors.yellow,
+                ),
               ),
             ),
           ),
           Text(countryCode,
               style: context.textStyles.textsecondaryFontExtraBold.copyWith(
-                  color: sticker != null ? Colors.white : Colors.black)),
+                  color: sticker != null ? Colors.white : Colors.black
+              ),
+          ),
           Text(stickerNumber,
               style: context.textStyles.textsecondaryFontExtraBold.copyWith(
-                  color: sticker != null ? Colors.white : Colors.black))
-        ]),
+                  color: sticker != null ? Colors.white : Colors.black
+              ),
+          ),
+        ],
+        ),
       ),
     );
+
   }
+
 }

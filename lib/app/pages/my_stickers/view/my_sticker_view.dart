@@ -5,5 +5,6 @@ abstract class MyStickerView{
   void error(String message);
   void updateStatusFilter(status);
   void updateAlbum(List<GroupsStickers> album);
+  void showLoader();
 
 }
