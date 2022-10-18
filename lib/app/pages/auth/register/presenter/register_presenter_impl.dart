@@ -13,7 +13,8 @@ class RegisterPresenterImpl implements RegisterPresenter {
   final UserRepository userRepository;
   late final RegisterView _view;
 
-  RegisterPresenterImpl({required this.authRepository, required this.userRepository});
+  RegisterPresenterImpl(
+      {required this.authRepository, required this.userRepository});
 
   @override
   Future<void> register({
@@ -22,16 +23,18 @@ class RegisterPresenterImpl implements RegisterPresenter {
     required String password,
     required String confirmPassword,
   }) async {
-    final registerUserModel1 = RegisterUserModel1(
-        name: name,
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword);
-
     try {
-      UserCredential userCredential = await authRepository.register(registerUserModel1);
+      UserCredential userCredential =
+          await authRepository.register(email: email, password: password);
 
-      await userRepository.addUser(registerUserModel1, userCredential.user?.uid ?? '');
+      final registerUserModel1 = RegisterUserModel1(
+          uid: userCredential.user?.uid ?? '',
+          name: name,
+          email: email,
+          password: password,
+          confirmPassword: confirmPassword);
+
+      await userRepository.addUser(registerUserModel1);
 
       _view.registerSuccess();
     } on FirebaseAuthException catch (e) {

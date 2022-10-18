@@ -6,5 +6,5 @@ import '../../models/user_model.dart';
 abstract class UserRepository {
   Future<UserModel> getMe();
 
-  Future<UserModel> addUser(RegisterUserModel1 user, String uid);
+  Future<UserModel> addUser(RegisterUserModel1 user);
 }

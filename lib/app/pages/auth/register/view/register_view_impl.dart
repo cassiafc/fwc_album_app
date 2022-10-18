@@ -25,7 +25,8 @@ abstract class RegisterViewImpl extends State<RegisterPage>
   void registerSuccess() {
     hideLoader();
     showSuccess('Usuário cadastrado com sucesso');
-    Navigator.of(context).pop();
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/home', (route) => false);
   }
   
 }

@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 class RegisterUserModel1 {
+  final String uid;
   final String name;
   final String email;
   final String password;
   final String confirmPassword;
 
   RegisterUserModel1({
+    required this.uid,
     required this.name,
     required this.email,
     required this.password,
@@ -22,8 +24,23 @@ class RegisterUserModel1 {
     };
   }
 
+  Map<String, dynamic> topMapSave() {
+    return {
+      "name": name,
+      "email": email,
+      "created_at": DateTime.now(),
+      "updated_at": DateTime.now(),
+      "total_album": 634,
+      "total_stickers": 0,
+      "total_duplicates": 0,
+      "total_complete": 634,
+      "total_complete_percent": 0
+    };
+  }
+
   factory RegisterUserModel1.fromMap(Map<String, dynamic> map) {
     return RegisterUserModel1(
+      uid: map['uid'] ?? '',
       name: map['nome'] ?? '',
       email: map['email'] ?? '',
       password: map['password'] ?? '',
