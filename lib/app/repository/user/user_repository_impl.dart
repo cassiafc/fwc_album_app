@@ -11,7 +11,8 @@ import 'package:fwc_album_app/app/repository/user/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final FirebaseAuth auth = FirebaseAuth.instance;
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final CollectionReference collectionRef =
+      FirebaseFirestore.instance.collection('users');
 
   final CustomDio dio;
 
@@ -24,8 +25,7 @@ class UserRepositoryImpl implements UserRepository {
     try {
       final User? currentUser = auth.currentUser;
 
-      DocumentSnapshot doc =
-          await firestore.collection('usuarios').doc(currentUser?.uid).get();
+      DocumentSnapshot doc = await collectionRef.doc(currentUser?.uid).get();
 
       if (!doc.exists) {
         throw RepositoryException(
@@ -41,23 +41,10 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<UserModel> addUser(RegisterUserModel1 user, String uid) async {
-    await FirebaseFirestore.instance.collection('usuarios').doc(uid).set({
-      "id": 1,
-      "name": user.name,
-      "email": user.email,
-      "token": "8e70861a-9b20-4d22-a62e-3161898e9611",
-      "created_at": DateTime.now(),
-      "updated_at": DateTime.now(),
-      "total_album": 634,
-      "total_stickers": 0,
-      "total_duplicates": 0,
-      "total_complete": 634,
-      "total_complete_percent": 0
-    });
+  Future<UserModel> addUser(RegisterUserModel1 user) async {
+    await collectionRef.doc(user.uid).set(user.topMapSave());
 
-    DocumentSnapshot doc =
-        await firestore.collection('usuarios').doc(uid).get();
+    DocumentSnapshot doc = await collectionRef.doc(user.uid).get();
 
     return UserModel.fromMap(doc.data() as Map<String, dynamic>);
   }

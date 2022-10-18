@@ -11,13 +11,13 @@ class HomeRoute extends FlutterGetItPageRoute {
 
   @override
   List<Bind<Object>> get bindings => [
-    Bind.lazySingleton<UserRepository>((i) => UserRepositoryImpl(dio: i())),
-    Bind.lazySingleton<HomePresenter>((i) => HomePresenterImpl (userRepository: i()))
-
-  ];
+        Bind.lazySingleton<UserRepository>((i) => UserRepositoryImpl(dio: i())),
+        Bind.lazySingleton<HomePresenter>(
+            (i) => HomePresenterImpl(userRepository: i(), authRepository: i()))
+      ];
 
   @override
   WidgetBuilder get page => (context) => HomePage(
-    presenter: context.get(),);
+        presenter: context.get(),
+      );
 }
-

@@ -1,17 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fwc_album_app/app/pages/home/presenter/home_presenter.dart';
 import 'package:fwc_album_app/app/pages/home/view/home_view.dart';
+import 'package:fwc_album_app/app/repository/auth/auth_repository.dart';
 import 'package:fwc_album_app/app/repository/user/user_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePresenterImpl implements HomePresenter {
-  final FirebaseAuth auth = FirebaseAuth.instance;
   final UserRepository userRepository;
+  final AuthRepository authRepository;
   late HomeView _view;
 
-  HomePresenterImpl({
-    required this.userRepository,
-  });
+  HomePresenterImpl(
+      {required this.userRepository, required this.authRepository});
 
   @override
   Future<void> getUserData() async {
@@ -27,9 +25,7 @@ class HomePresenterImpl implements HomePresenter {
   @override
   Future<void> logout() async {
     _view.showLoader();
-    auth.signOut();
-    // final sp = await SharedPreferences.getInstance();
-    // sp.clear();
+    await authRepository.logout();
     _view.logoutSuccess();
   }
 
