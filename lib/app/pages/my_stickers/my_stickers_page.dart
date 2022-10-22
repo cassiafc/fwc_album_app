@@ -24,7 +24,8 @@ class _MyStickersPageState extends MyStickerViewImpl {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: Column(children: [
+            child: Column(
+              children: [
                 StickerStatusFilter(
                   filterSelected: statusFilter,
                 ),
@@ -48,5 +49,4 @@ class _MyStickersPageState extends MyStickerViewImpl {
       ),
     );
   }
-
 }

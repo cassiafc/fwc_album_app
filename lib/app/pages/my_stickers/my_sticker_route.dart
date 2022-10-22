@@ -10,14 +10,13 @@ class MyStickerRoute extends FlutterGetItPageRoute {
   const MyStickerRoute({super.key});
 
   List<Bind<Object>> get bindings => [
-    Bind.lazySingleton<StickersRepository>(
-        (i) => StickersRepositoryImpl(dio: i())),
-    Bind.lazySingleton<MyStickerPresenter>(
-        (i) => MyStickerPresenterImpl(stickersRepository: i()))
-  ];
+        Bind.lazySingleton<StickersRepository>(
+            (i) => StickersRepositoryImpl(dio: i())),
+        Bind.lazySingleton<MyStickerPresenter>(
+            (i) => MyStickerPresenterImpl(stickersRepository: i()))
+      ];
 
   @override
   WidgetBuilder get page =>
-          (context) => MyStickersPage(presenter: context.get());
-
+      (context) => MyStickersPage(presenter: context.get());
 }

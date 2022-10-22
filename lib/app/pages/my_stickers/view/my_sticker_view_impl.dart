@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:fwc_album_app/app/core/exceptions/repository_exception.dart';
 import 'package:fwc_album_app/app/core/ui/helpers/loader.dart';
 import 'package:fwc_album_app/app/core/ui/helpers/messages.dart';
 import 'package:fwc_album_app/app/models/groups_stickers.dart';
@@ -14,16 +15,24 @@ abstract class MyStickerViewImpl extends State<MyStickersPage>
 
   @override
   void initState() {
-    widget.presenter.view = this;
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      showLoader();
-      widget.presenter.getMyAlbum();
-    });
+    try {
+      widget.presenter.view = this;
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        showLoader();
+        widget.presenter.getMyAlbum();
+      });
+    } catch (e) {
+      showError("Não foi possível carregar o álbum");
+    }
+
     super.initState();
   }
 
   @override
-  void error(String message) => showError(message);
+  void error(String message){
+    hideLoader();
+    showError(message);
+  }
 
   @override
   void loadedPage(List<GroupsStickers> album) {

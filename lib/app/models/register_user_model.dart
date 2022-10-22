@@ -24,7 +24,7 @@ class RegisterUserModel1 {
     };
   }
 
-  Map<String, dynamic> topMapSave() {
+  Map<String, dynamic> toMapSave() {
     return {
       "name": name,
       "email": email,
