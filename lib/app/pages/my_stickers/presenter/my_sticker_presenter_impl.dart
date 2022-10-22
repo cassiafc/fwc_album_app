@@ -45,9 +45,9 @@ class MyStickerPresenterImpl implements MyStickerPresenter {
 
   @override
   void refresh() async {
-   _view.showLoader();
-   await getMyAlbum();
-   countryFilter(countries);
-   statusFilter(statusSelected);
+    _view.showLoader();
+    await getMyAlbum();
+    countryFilter(countries);
+    statusFilter(statusSelected);
   }
 }

@@ -42,7 +42,7 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<UserModel> addUser(RegisterUserModel1 user) async {
-    await collectionRef.doc(user.uid).set(user.topMapSave());
+    await collectionRef.doc(user.uid).set(user.toMapSave());
 
     DocumentSnapshot doc = await collectionRef.doc(user.uid).get();
 

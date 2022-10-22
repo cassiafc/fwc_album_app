@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +9,7 @@ import 'package:fwc_album_app/app/core/rest/custom_dio.dart';
 import 'package:fwc_album_app/app/models/groups_stickers.dart';
 import 'package:fwc_album_app/app/models/registe_Sticker_model.dart';
 import 'package:fwc_album_app/app/models/sticker_model.dart';
+import 'package:fwc_album_app/app/models/user_sticker_model.dart';
 import 'package:fwc_album_app/app/repository/stickers/stickers_repository.dart';
 
 class StickersRepositoryImpl implements StickersRepository {
@@ -21,19 +23,45 @@ class StickersRepositoryImpl implements StickersRepository {
 
   @override
   Future<List<GroupsStickers>> getMyAlbum() async {
-    try {
-      final countriesRef = firestore.collection("countries");
+    final User? currentUser = auth.currentUser;
+    final countriesRef = firestore.collection("countries");
+    final albumsRef = firestore.collection("albums");
 
-      QuerySnapshot snapshots = await countriesRef.get();
+    QuerySnapshot countriesSnapshot = await countriesRef.get();
 
-      return snapshots.docs
-          .map<GroupsStickers>(
-              (e) => GroupsStickers.forMap(e.data() as Map<String, dynamic>))
-          .toList();
-    } on DioError catch (e, s) {
-      log('Erro ao buscar album do usuário', error: e, stackTrace: s);
-      throw RepositoryException(message: 'Erro ao buscar album do usuário');
+    DocumentSnapshot album = await albumsRef.doc(currentUser?.uid).get();
+
+    if (!album.exists) {
+      await albumsRef
+          .doc(currentUser?.uid)
+          .set(countriesToMap(countriesSnapshot));
     }
+
+    List<GroupsStickers> list = countriesSnapshot.docs
+        .map<GroupsStickers>(
+            (e) => GroupsStickers.forMap(e.data() as Map<String, dynamic>))
+        .toList();
+
+    list.sort((a, b) => a.id.compareTo(b.id));
+
+    return list;
+  }
+
+  Map<String, dynamic> countriesToMap(QuerySnapshot countriesSnapshot) {
+    return {
+      'countries': countriesSnapshot.docs
+          .map((e) => countryToMap(e.data() as Map<String, dynamic>))
+          .toList(),
+    };
+  }
+
+  Map<String, dynamic> countryToMap(Map<String, dynamic> map) {
+    return {
+      'id': map['id']?.toInt() ?? 0,
+      'country_code': map['country_code'] ?? '',
+      'stickers': List<UserStickerModel>.from(
+          map['stickers']?.map((x) => UserStickerModel.fromMap(x))),
+    };
   }
 
   @override
